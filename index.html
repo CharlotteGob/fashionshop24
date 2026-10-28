@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FASHIONSHOP24 – Online Store</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--ink:#1c1c1c;--muted:#6b6b6b;--line:#e4e2dd;--bg:#ffffff;--soft:#f6f5f2;--accent:#1f3a5f;--accent-ink:#ffffff;--err:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:16px}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.topbar{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:6px 16px}
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:700;letter-spacing:.18em;font-size:20px;text-decoration:none}
+nav{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+nav span{cursor:default}
+.cartbtn{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+.cartbtn b{display:inline-block;min-width:18px;height:18px;line-height:18px;border-radius:9px;background:var(--ink);color:#fff;font-size:11px;text-align:center;margin-left:6px}
+main{padding:28px 0 64px}
+h1{font-size:28px;margin:0 0 6px;font-weight:600}
+h2{font-size:20px;margin:0 0 12px;font-weight:600}
+.sub{color:var(--muted);margin:0 0 24px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.card{cursor:pointer;text-decoration:none}
+.thumb{background:var(--soft);border-radius:6px;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb svg{width:72%;height:auto}
+.card .name{margin:10px 0 0;font-size:15px}
+.card .price{color:var(--muted);font-size:14px}
+.card:hover .thumb{outline:1px solid var(--ink)}
+.crumbs{font-size:13px;color:var(--muted);margin-bottom:18px}
+.crumbs a{cursor:pointer;text-decoration:underline}
+.pdp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px}
+.pdp .thumb{aspect-ratio:1/1}
+.price-lg{font-size:20px;margin:4px 0 20px}
+.label{font-size:13px;font-weight:600;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);padding:0;outline-offset:3px}
+.sw[aria-pressed="true"]{outline:2px solid var(--ink)}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.sz{min-width:48px;height:40px;border:1px solid var(--line);background:#fff;border-radius:4px}
+.sz[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.btn{display:inline-block;background:var(--accent);color:var(--accent-ink);border:none;border-radius:4px;padding:14px 22px;font-weight:600;font-size:15px;text-decoration:none;text-align:center}
+.btn.full{width:100%}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:var(--err);font-size:14px;margin-top:8px;min-height:20px}
+.desc{color:var(--muted);font-size:15px;margin-top:24px;border-top:1px solid var(--line);padding-top:16px}
+.desc li{margin-bottom:4px}
+.cartrow{display:grid;grid-template-columns:88px minmax(0,1fr) auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.cartrow .thumb{aspect-ratio:1/1}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;align-items:start}
+.summary{background:var(--soft);border-radius:6px;padding:20px}
+.sumline{display:flex;justify-content:space-between;margin:6px 0;font-size:15px}
+.sumline.total{font-weight:700;border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
+.section{border:1px solid var(--line);border-radius:6px;padding:18px 20px;margin-bottom:18px}
+.section h2{font-size:17px;margin-bottom:10px}
+.addr{font-size:15px}
+.note{font-size:13px;color:var(--muted);margin-top:6px}
+.opt{display:block;border:1px solid var(--line);border-radius:6px;padding:14px 16px;margin-bottom:12px;cursor:pointer}
+.opt.sel{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.opt .head{display:flex;gap:12px;align-items:flex-start}
+.opt input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--ink)}
+.opt .t{font-weight:600}
+.opt .meta{margin-left:auto;font-size:14px;color:var(--muted);white-space:nowrap;padding-left:8px}
+.opt .body{margin:6px 0 0 30px;font-size:14.5px;color:#3a3a3a}
+.about{margin:10px 0 0 30px;font-size:14.5px;color:#3a3a3a;background:var(--soft);border-radius:4px;padding:10px 12px}
+.about b{display:block;margin-bottom:4px;color:var(--ink)}
+.steps{display:flex;gap:8px;font-size:13px;color:var(--muted);margin-bottom:20px;flex-wrap:wrap}
+.steps .on{color:var(--ink);font-weight:600}
+.center{text-align:center;max-width:520px;margin:40px auto}
+.check{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;font-size:28px;line-height:56px;margin:0 auto 16px}
+footer{border-top:1px solid var(--line);padding:24px 0;font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:820px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .pdp,.two{grid-template-columns:minmax(0,1fr);gap:24px}
+  nav{display:none}
+  h1{font-size:24px}
+  .opt .head{flex-wrap:wrap}
+  .opt .meta{margin-left:30px;padding-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+<div class="topbar">Free delivery on all orders</div>
+<header><div class="wrap">
+  <a class="logo" data-go="home">FASHIONSHOP24</a>
+  <nav><span>Women</span><span>Men</span><span>T-Shirts</span><span>New in</span></nav>
+  <button class="cartbtn" data-go="cart" aria-label="Shopping cart">Cart<b id="cartcount">0</b></button>
+</div></header>
+<main><div class="wrap" id="app"></div></main>
+<footer><div class="wrap"><span>© FASHIONSHOP24</span><span>Help · Shipping · Returns · Privacy</span></div></footer>
+
+<script>
+/* ===================== CONFIGURATION ===================== */
+// Return link to LimeSurvey (part 2). {pid}, {cond}, {choice}, {product}, {color}, {size}, {ms} are replaced.
+const RETURN_URL = "https://REPLACE-WITH-YOUR-LIMESURVEY/index.php/000000?lang=en&PROLIFIC_PID={pid}&cond={cond}&choice={choice}&product={product}&color={color}&size={size}&ms={ms}";
+
+// Option A: identical in all conditions
+const OPTION_A = { title: "Standard delivery", body: "The T-shirt is shipped from the retailer’s warehouse." };
+
+// Option B per condition (1 = P2P control, 2 = P2P analogical, 3 = Crowdshipping control, 4 = Crowdshipping analogical)
+const P2P_TITLE = "Peer-to-Peer return delivery";
+const P2P_BODY  = "The T-shirt is a returned item from another customer and is sent directly from that customer to you."; // TODO: replace with the Study 3 control wording
+const P2P_ABOUT = "Peer-to-peer delivery processes are already common in many online-shopping contexts. You may already know the principle from platforms such as eBay, Vinted, Etsy or other peer-to-peer marketplaces, where items are sent directly from one person to another. Peer-to-Peer return delivery follows this same idea of directly sending an item from one customer to another. In this sense, the delivery principle is similar to delivery processes you may already be familiar with.";
+const CS_TITLE  = "Crowdshipping";
+const CS_BODY   = "The T-shirt is brought to you by a private person who is travelling in your direction anyway.";
+const CS_ABOUT  = "Ride-sharing is already common in many everyday travel contexts. You may already know the principle from platforms such as BlaBlaCar or other ride-sharing services, where private persons who travel a route anyway take others along. Crowdshipping follows this same idea of a private person taking something along on a trip they are making anyway. In this sense, the delivery principle is similar to services you may already be familiar with.";
+const CONDITIONS = {
+  "1": { title: P2P_TITLE, body: P2P_BODY, about: null },
+  "2": { title: P2P_TITLE, body: P2P_BODY, about: P2P_ABOUT },
+  "3": { title: CS_TITLE,  body: CS_BODY,  about: null },
+  "4": { title: CS_TITLE,  body: CS_BODY,  about: CS_ABOUT }
+};
+const DELIVERY_META = "Free"; // identical for both options
+/* ========================================================= */
+
+const PRODUCTS = [
+  { id: "crew",    name: "Classic Crew T-Shirt",  price: 19.99, colors: [["White","#f4f3ef"],["Black","#222222"],["Navy","#24324a"],["Sage","#9aa98c"]], stripe: false, pocket: false },
+  { id: "relaxed", name: "Relaxed Fit T-Shirt",   price: 22.99, colors: [["Sand","#d8c8ac"],["Grey","#9a9a9a"],["Black","#222222"]], stripe: false, pocket: false },
+  { id: "striped", name: "Striped Breton T-Shirt",price: 24.99, colors: [["Navy/White","#24324a"],["Red/White","#a63a32"]], stripe: true, pocket: false },
+  { id: "pocket",  name: "Pocket T-Shirt",        price: 21.99, colors: [["Ecru","#ece4d4"],["Olive","#6f7353"],["Rust","#a5582f"]], stripe: false, pocket: true }
+];
+const SIZES = ["XS","S","M","L","XL","XXL"];
+
+const qs = new URLSearchParams(location.search);
+const PID = (qs.get("PROLIFIC_PID") || qs.get("id") || "").trim();
+const COND = (qs.get("cond") || "").trim();
+const DONE_KEY = "fs24_done_" + PID;
+const store = {
+  get(k){ try { return sessionStorage.getItem(k) || localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { sessionStorage.setItem(k,v); localStorage.setItem(k,v); } catch(e){} }
+};
+const state = { cart: null, choice: null, checkoutStart: null, sel: {} };
+const app = document.getElementById("app");
+const eur = n => n.toFixed(2).replace(".", ",") + " €";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+
+function tee(color, stripe, pocket){
+  const stroke = "rgba(0,0,0,.18)";
+  let stripes = "";
+  if (stripe) for (let y = 70; y < 190; y += 14) stripes += `<rect x="40" y="${y}" width="120" height="6" fill="#ffffff" opacity=".9" clip-path="url(#c)"/>`;
+  return `<svg viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="c"><path d="M70 22 L52 28 L18 52 L34 82 L50 74 L50 182 L150 182 L150 74 L166 82 L182 52 L148 28 L130 22 C124 36 112 42 100 42 C88 42 76 36 70 22 Z"/></clipPath></defs>
+  <path d="M70 22 L52 28 L18 52 L34 82 L50 74 L50 182 L150 182 L150 74 L166 82 L182 52 L148 28 L130 22 C124 36 112 42 100 42 C88 42 76 36 70 22 Z" fill="${color}" stroke="${stroke}" stroke-width="1.5"/>
+  ${stripes}
+  ${pocket ? `<rect x="112" y="70" width="24" height="26" rx="2" fill="none" stroke="${stroke}" stroke-width="1.5"/>` : ""}
+  <path d="M70 22 C76 36 88 42 100 42 C112 42 124 36 130 22" fill="none" stroke="${stroke}" stroke-width="2"/></svg>`;
+}
+
+function setCount(){ document.getElementById("cartcount").textContent = state.cart ? 1 : 0; }
+function go(route){
+  if (store.get(DONE_KEY)) route = "done";
+  location.hash = route;
+}
+window.addEventListener("hashchange", render);
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]");
+  if (g) { e.preventDefault(); go(g.dataset.go); }
+});
+
+function render(){
+  window.scrollTo(0,0);
+  setCount();
+  if (!PID || !CONDITIONS[COND]) {
+    app.innerHTML = `<div class="center"><h1>Link not valid</h1><p class="sub">Please return to the survey and use the link provided there.</p></div>`;
+    return;
+  }
+  let r = location.hash.replace("#","") || "home";
+  if (store.get(DONE_KEY)) r = "done";
+  if ((r === "checkout") && !state.cart) r = "cart";
+  const [page, arg] = r.split("/");
+  ({ home, product, cart, checkout, done }[page] || home)(arg);
+}
+
+function home(){
+  app.innerHTML = `<h1>T-Shirts</h1><p class="sub">Everyday essentials in soft cotton.</p>
+  <div class="grid">${PRODUCTS.map(p => `
+    <a class="card" data-go="product/${p.id}">
+      <div class="thumb">${tee(p.colors[0][1], p.stripe, p.pocket)}</div>
+      <p class="name">${esc(p.name)}</p><div class="price">${eur(p.price)}</div>
+    </a>`).join("")}</div>`;
+}
+
+function product(id){
+  const p = PRODUCTS.find(x => x.id === id) || PRODUCTS[0];
+  const s = state.sel[p.id] || (state.sel[p.id] = { color: 0, size: null });
+  app.innerHTML = `<div class="crumbs"><a data-go="home">T-Shirts</a> / ${esc(p.name)}</div>
+  <div class="pdp">
+    <div class="thumb" id="img">${tee(p.colors[s.color][1], p.stripe, p.pocket)}</div>
+    <div>
+      <h1>${esc(p.name)}</h1><div class="price-lg">${eur(p.price)}</div>
+      <div class="label">Colour: <span id="cname" style="text-transform:none;font-weight:400">${esc(p.colors[s.color][0])}</span></div>
+      <div class="swatches">${p.colors.map((c,i) => `<button class="sw" style="background:${c[1]}" aria-label="${esc(c[0])}" aria-pressed="${i===s.color}" data-c="${i}"></button>`).join("")}</div>
+      <div class="label">Size</div>
+      <div class="sizes">${SIZES.map(z => `<button class="sz" aria-pressed="${z===s.size}" data-s="${z}">${z}</button>`).join("")}</div>
+      <div class="err" id="perr"></div>
+      <button class="btn full" id="add">Add to cart</button>
+      <div class="desc"><ul><li>100% cotton, regular weight</li><li>Machine washable at 30 °C</li><li>Model is 1.80 m and wears size M</li></ul></div>
+    </div>
+  </div>`;
+  app.querySelectorAll(".sw").forEach(b => b.onclick = () => {
+    s.color = +b.dataset.c;
+    app.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
+    document.getElementById("img").innerHTML = tee(p.colors[s.color][1], p.stripe, p.pocket);
+    document.getElementById("cname").textContent = p.colors[s.color][0];
+  });
+  app.querySelectorAll(".sz").forEach(b => b.onclick = () => {
+    s.size = b.dataset.s;
+    app.querySelectorAll(".sz").forEach(x => x.setAttribute("aria-pressed", x === b));
+    document.getElementById("perr").textContent = "";
+  });
+  document.getElementById("add").onclick = () => {
+    if (!s.size) { document.getElementById("perr").textContent = "Please select a size."; return; }
+    state.cart = { p, color: p.colors[s.color][0], hex: p.colors[s.color][1], size: s.size };
+    go("cart");
+  };
+}
+
+function cart(){
+  if (!state.cart) {
+    app.innerHTML = `<h1>Your cart</h1><p class="sub">Your cart is empty.</p><a class="btn ghost" data-go="home">Continue shopping</a>`;
+    return;
+  }
+  const c = state.cart;
+  app.innerHTML = `<h1>Your cart</h1>
+  <div class="two"><div>
+    <div class="cartrow"><div class="thumb">${tee(c.hex, c.p.stripe, c.p.pocket)}</div>
+      <div><div>${esc(c.p.name)}</div><div class="muted small">${esc(c.color)} · Size ${esc(c.size)} · Qty 1</div>
+      <a class="small muted" style="cursor:pointer;text-decoration:underline" id="rm">Remove</a></div>
+      <div>${eur(c.p.price)}</div></div>
+    <p style="margin-top:16px"><a class="small" data-go="home" style="cursor:pointer">← Continue shopping</a></p>
+  </div>
+  <div class="summary"><div class="sumline"><span>Subtotal</span><span>${eur(c.p.price)}</span></div>
+    <div class="sumline"><span>Delivery</span><span>Free</span></div>
+    <div class="sumline total"><span>Total</span><span>${eur(c.p.price)}</span></div>
+    <button class="btn full" style="margin-top:14px" data-go="checkout">Go to checkout</button></div></div>`;
+  document.getElementById("rm").onclick = () => { state.cart = null; render(); };
+}
+
+function optHTML(key, o){
+  return `<label class="opt" data-opt="${key}"><div class="head">
+    <input type="radio" name="delivery" value="${key}" aria-label="${esc(o.title)}">
+    <span class="t">${esc(o.title)}</span><span class="meta">${DELIVERY_META}</span></div>
+    <div class="body">${esc(o.body)}</div>
+    ${o.about ? `<div class="about"><b>About ${esc(o.title)}:</b>${esc(o.about)}</div>` : ""}</label>`;
+}
+
+function checkout(){
+  const c = state.cart, B = CONDITIONS[COND];
+  if (!state.checkoutStart) state.checkoutStart = Date.now();
+  app.innerHTML = `<div class="steps"><span>Cart</span><span>›</span><span class="on">Checkout</span><span>›</span><span>Confirmation</span></div>
+  <h1>Checkout</h1>
+  <div class="two"><div>
+    <div class="section"><h2>Delivery address</h2>
+      <div class="addr">Alex Example<br>Sample Street 12<br>20095 Hamburg, Germany</div>
+      <div class="note">For this study, a sample address is used. No personal data is collected.</div></div>
+    <div class="section"><h2>Delivery option</h2>
+      ${optHTML("A", OPTION_A)}${optHTML("B", B)}
+      <div class="err" id="derr"></div></div>
+    <div class="section"><h2>Payment</h2>
+      <div class="addr">Invoice</div><div class="note">No payment is made in this study.</div></div>
+  </div>
+  <div class="summary"><div class="cartrow" style="grid-template-columns:64px minmax(0,1fr);padding-top:0">
+      <div class="thumb">${tee(c.hex, c.p.stripe, c.p.pocket)}</div>
+      <div class="small">${esc(c.p.name)}<br><span class="muted">${esc(c.color)} · Size ${esc(c.size)}</span></div></div>
+    <div class="sumline"><span>Subtotal</span><span>${eur(c.p.price)}</span></div>
+    <div class="sumline"><span>Delivery</span><span>Free</span></div>
+    <div class="sumline total"><span>Total</span><span>${eur(c.p.price)}</span></div>
+    <button class="btn full" style="margin-top:14px" id="place">Place order</button></div></div>`;
+  app.querySelectorAll('input[name="delivery"]').forEach(inp => inp.onchange = () => {
+    state.choice = inp.value;
+    app.querySelectorAll(".opt").forEach(l => l.classList.toggle("sel", l.dataset.opt === inp.value));
+    document.getElementById("derr").textContent = "";
+  });
+  if (state.choice) { const i = app.querySelector(`input[value="${state.choice}"]`); i.checked = true; i.onchange(); }
+  document.getElementById("place").onclick = () => {
+    if (!state.choice) { document.getElementById("derr").textContent = "Please select a delivery option."; return; }
+    const ms = Date.now() - state.checkoutStart;
+    const url = RETURN_URL
+      .replace("{pid}", encodeURIComponent(PID)).replace("{cond}", encodeURIComponent(COND))
+      .replace("{choice}", state.choice).replace("{product}", encodeURIComponent(c.p.id))
+      .replace("{color}", encodeURIComponent(c.color)).replace("{size}", encodeURIComponent(c.size))
+      .replace("{ms}", ms);
+    store.set(DONE_KEY, url);
+    history.replaceState(null, "", location.pathname + location.search + "#done");
+    render();
+  };
+}
+
+function done(){
+  const url = store.get(DONE_KEY);
+  app.innerHTML = `<div class="center"><div class="check">✓</div><h1>Thank you for your order</h1>
+    <p class="sub">You will now be redirected to the survey to continue.</p>
+    <a class="btn" id="cont" href="${esc(url)}">Continue to the survey</a></div>`;
+  setTimeout(() => { location.href = url; }, 2500);
+}
+
+render();
+</script>
+</body>
+</html>
