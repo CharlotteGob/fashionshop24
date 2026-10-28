@@ -26,7 +26,7 @@ h2{font-size:20px;margin:0 0 12px;font-weight:600}
 .sub{color:var(--muted);margin:0 0 24px}
 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
 .card{cursor:pointer;text-decoration:none}
-.thumb{background:var(--soft);border-radius:6px;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb{background:#cac7c2;border-radius:6px;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .thumb svg{width:72%;height:auto}
 .card .name{margin:10px 0 0;font-size:15px}
 .card .price{color:var(--muted);font-size:14px}
@@ -34,7 +34,7 @@ h2{font-size:20px;margin:0 0 12px;font-weight:600}
 .crumbs{font-size:13px;color:var(--muted);margin-bottom:18px}
 .crumbs a{cursor:pointer;text-decoration:underline}
 .pdp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px}
-.pdp .thumb{aspect-ratio:1/1}
+.pdp .thumb{aspect-ratio:4/5}
 .price-lg{font-size:20px;margin:4px 0 20px}
 .label{font-size:13px;font-weight:600;margin:18px 0 8px;text-transform:uppercase;letter-spacing:.06em}
 .swatches{display:flex;gap:10px;flex-wrap:wrap}
@@ -91,7 +91,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 <div class="topbar">Free delivery on all orders</div>
 <header><div class="wrap">
   <a class="logo" data-go="home">FASHIONSHOP24</a>
-  <nav><span>Women</span><span>Men</span><span>T-Shirts</span><span>New in</span></nav>
+  <nav><a data-go="home" style="cursor:pointer;text-decoration:none">T-Shirts</a><span>New in</span><span>Sale</span></nav>
   <button class="cartbtn" data-go="cart" aria-label="Shopping cart">Cart<b id="cartcount">0</b></button>
 </div></header>
 <main><div class="wrap" id="app"></div></main>
@@ -121,12 +121,14 @@ const CONDITIONS = {
 const DELIVERY_META = "Free"; // identical for both options
 /* ========================================================= */
 
-const PRODUCTS = [
-  { id: "crew",    name: "Classic Crew T-Shirt",  price: 19.99, colors: [["White","#f4f3ef"],["Black","#222222"],["Navy","#24324a"],["Sage","#9aa98c"]], stripe: false, pocket: false },
-  { id: "relaxed", name: "Relaxed Fit T-Shirt",   price: 22.99, colors: [["Sand","#d8c8ac"],["Grey","#9a9a9a"],["Black","#222222"]], stripe: false, pocket: false },
-  { id: "striped", name: "Striped Breton T-Shirt",price: 24.99, colors: [["Navy/White","#24324a"],["Red/White","#a63a32"]], stripe: true, pocket: false },
-  { id: "pocket",  name: "Pocket T-Shirt",        price: 21.99, colors: [["Ecru","#ece4d4"],["Olive","#6f7353"],["Rust","#a5582f"]], stripe: false, pocket: true }
+const BASE = [
+  { id: "crew",    name: "Classic Crew T-Shirt",   price: 19.99, colors: [["White","#f4f3ef"]],      stripe: false, pocket: false },
+  { id: "relaxed", name: "Essential T-Shirt",      price: 22.99, colors: [["Black","#222222"]],      stripe: false, pocket: false },
+  { id: "striped", name: "Striped Breton T-Shirt", price: 24.99, colors: [["Navy/White","#24324a"]], stripe: true,  pocket: false },
+  { id: "pocket",  name: "Pocket T-Shirt",         price: 21.99, colors: [["Olive","#6f7353"]],      stripe: false, pocket: true }
 ];
+// Unisex; photos: img/crew-white.jpg, img/relaxed-black.jpg, img/striped-navy-white.jpg, img/pocket-olive.jpg
+const PRODUCTS = BASE;
 const SIZES = ["XS","S","M","L","XL","XXL"];
 
 const qs = new URLSearchParams(location.search);
@@ -151,6 +153,13 @@ function tee(color, stripe, pocket){
   ${stripes}
   ${pocket ? `<rect x="112" y="70" width="24" height="26" rx="2" fill="none" stroke="${stroke}" stroke-width="1.5"/>` : ""}
   <path d="M70 22 C76 36 88 42 100 42 C112 42 124 36 130 22" fill="none" stroke="${stroke}" stroke-width="2"/></svg>`;
+}
+
+function slug(x){ return x.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""); }
+// Product photo: img/<product-id>-<colour>.jpg (e.g. img/crew-white.jpg). Falls back to the drawing if the file is missing.
+function pic(p, i){
+  const c = p.colors[i], fb = encodeURIComponent(tee(c[1], p.stripe, p.pocket));
+  return `<img src="img/${p.id}-${slug(c[0])}.jpg" alt="${esc(p.name)}, ${esc(c[0])}" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML=decodeURIComponent('${fb}')">`;
 }
 
 function setCount(){ document.getElementById("cartcount").textContent = state.cart ? 1 : 0; }
@@ -179,10 +188,10 @@ function render(){
 }
 
 function home(){
-  app.innerHTML = `<h1>T-Shirts</h1><p class="sub">Everyday essentials in soft cotton.</p>
+  app.innerHTML = `<h1>Unisex T-Shirts</h1><p class="sub">Everyday essentials in soft cotton.</p>
   <div class="grid">${PRODUCTS.map(p => `
     <a class="card" data-go="product/${p.id}">
-      <div class="thumb">${tee(p.colors[0][1], p.stripe, p.pocket)}</div>
+      <div class="thumb">${pic(p, 0)}</div>
       <p class="name">${esc(p.name)}</p><div class="price">${eur(p.price)}</div>
     </a>`).join("")}</div>`;
 }
@@ -192,22 +201,22 @@ function product(id){
   const s = state.sel[p.id] || (state.sel[p.id] = { color: 0, size: null });
   app.innerHTML = `<div class="crumbs"><a data-go="home">T-Shirts</a> / ${esc(p.name)}</div>
   <div class="pdp">
-    <div class="thumb" id="img">${tee(p.colors[s.color][1], p.stripe, p.pocket)}</div>
+    <div class="thumb" id="img">${pic(p, s.color)}</div>
     <div>
       <h1>${esc(p.name)}</h1><div class="price-lg">${eur(p.price)}</div>
       <div class="label">Colour: <span id="cname" style="text-transform:none;font-weight:400">${esc(p.colors[s.color][0])}</span></div>
-      <div class="swatches">${p.colors.map((c,i) => `<button class="sw" style="background:${c[1]}" aria-label="${esc(c[0])}" aria-pressed="${i===s.color}" data-c="${i}"></button>`).join("")}</div>
+      ${p.colors.length > 1 ? `<div class="swatches">${p.colors.map((c,i) => `<button class="sw" style="background:${c[1]}" aria-label="${esc(c[0])}" aria-pressed="${i===s.color}" data-c="${i}"></button>`).join("")}</div>` : ""}
       <div class="label">Size</div>
       <div class="sizes">${SIZES.map(z => `<button class="sz" aria-pressed="${z===s.size}" data-s="${z}">${z}</button>`).join("")}</div>
       <div class="err" id="perr"></div>
       <button class="btn full" id="add">Add to cart</button>
-      <div class="desc"><ul><li>100% cotton, regular weight</li><li>Machine washable at 30 °C</li><li>Model is 1.80 m and wears size M</li></ul></div>
+      <div class="desc"><ul><li>Unisex fit</li><li>100% cotton, regular weight</li><li>Machine washable at 30 °C</li><li>Model is 1.80 m and wears size M</li></ul></div>
     </div>
   </div>`;
   app.querySelectorAll(".sw").forEach(b => b.onclick = () => {
     s.color = +b.dataset.c;
     app.querySelectorAll(".sw").forEach(x => x.setAttribute("aria-pressed", x === b));
-    document.getElementById("img").innerHTML = tee(p.colors[s.color][1], p.stripe, p.pocket);
+    document.getElementById("img").innerHTML = pic(p, s.color);
     document.getElementById("cname").textContent = p.colors[s.color][0];
   });
   app.querySelectorAll(".sz").forEach(b => b.onclick = () => {
@@ -217,7 +226,7 @@ function product(id){
   });
   document.getElementById("add").onclick = () => {
     if (!s.size) { document.getElementById("perr").textContent = "Please select a size."; return; }
-    state.cart = { p, color: p.colors[s.color][0], hex: p.colors[s.color][1], size: s.size };
+    state.cart = { p, ci: s.color, color: p.colors[s.color][0], size: s.size };
     go("cart");
   };
 }
@@ -230,7 +239,7 @@ function cart(){
   const c = state.cart;
   app.innerHTML = `<h1>Your cart</h1>
   <div class="two"><div>
-    <div class="cartrow"><div class="thumb">${tee(c.hex, c.p.stripe, c.p.pocket)}</div>
+    <div class="cartrow"><div class="thumb">${pic(c.p, c.ci)}</div>
       <div><div>${esc(c.p.name)}</div><div class="muted small">${esc(c.color)} · Size ${esc(c.size)} · Qty 1</div>
       <a class="small muted" style="cursor:pointer;text-decoration:underline" id="rm">Remove</a></div>
       <div>${eur(c.p.price)}</div></div>
@@ -267,7 +276,7 @@ function checkout(){
       <div class="addr">Invoice</div><div class="note">No payment is made in this study.</div></div>
   </div>
   <div class="summary"><div class="cartrow" style="grid-template-columns:64px minmax(0,1fr);padding-top:0">
-      <div class="thumb">${tee(c.hex, c.p.stripe, c.p.pocket)}</div>
+      <div class="thumb">${pic(c.p, c.ci)}</div>
       <div class="small">${esc(c.p.name)}<br><span class="muted">${esc(c.color)} · Size ${esc(c.size)}</span></div></div>
     <div class="sumline"><span>Subtotal</span><span>${eur(c.p.price)}</span></div>
     <div class="sumline"><span>Delivery</span><span>Free</span></div>
